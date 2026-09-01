@@ -1,0 +1,89 @@
+[project]
+name = "tehillim-texttype"
+version = "0.1.0"
+description = "Text-type analysis of the Psalter from BHSA's txt feature."
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "text-fabric[github]>=13.1.0",
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff>=0.6",
+    "mypy>=1.10",
+    "vulture>=2.11",
+    "deptry>=0.16",
+]
+
+[tool.deptry]
+known_first_party = ["library", "texttype"]
+
+[tool.deptry.per_rule_ignores]
+# Tools CI invokes, so none of them is ever imported by this package.
+DEP002 = ["pytest", "pytest-cov", "ruff", "mypy", "deptry", "vulture"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "A", "ANN", "ARG", "B", "BLE", "C4", "C90", "DTZ", "E", "ERA", "F", "FBT", "FURB", "I",
+    "ICN", "INP", "ISC", "N", "NPY", "PD", "PERF", "PGH", "PIE", "PL", "PT", "PTH", "RET",
+    "RSE", "RUF", "S", "SIM", "SLF", "T20", "TC", "TID", "TRY", "UP", "W",
+]
+ignore = [
+    "TRY003",  # a specific message at the raise site beats one exception subclass per diagnostic
+]
+
+[tool.ruff.lint.per-file-ignores]
+# A vulture whitelist is by format a list of bare attribute expressions.
+".vulture-whitelist.py" = ["B018", "INP001"]
+# Tests assert, use literal fixtures, and reach into private helpers by design.
+"tests/*" = [
+    "S101", "PLR2004", "INP001", "ANN", "SLF001", "PLR0913", "PLR0917", "ARG", "PLC0415", "TC003",
+]
+# A script's stdout is its interface.
+"src/*/scripts/*" = ["T201"]
+# Text-Fabric exposes runtime-named features, so Any is the accurate annotation, not a weak one.
+"src/library/bhsa.py" = ["ANN401"]
+"src/texttype/corpus.py" = ["ANN401"]
+"src/texttype/triggers.py" = ["ANN401"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pylint]
+max-args = 8
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--cov=src", "--cov-report=term-missing"]
+# A numpy warning means a statistic silently degenerated, so it fails the build.
+filterwarnings = ["error"]
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 95
+exclude_also = [
+    "^def main\\(\\) -> None:$",
+    "^if __name__ == .__main__.:$",
+]
