@@ -1,8 +1,8 @@
 [project]
 name = "tehillim-texttype"
-version = "0.1.0"
+version = "0.2.0"
 description = "Text-type analysis of the Psalter from BHSA's txt feature."
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 license = { text = "MIT" }
 dependencies = [
     "text-fabric[github]>=13.1.0",
@@ -60,6 +60,9 @@ ignore = [
 "src/library/bhsa.py" = ["ANN401"]
 "src/texttype/corpus.py" = ["ANN401"]
 "src/texttype/triggers.py" = ["ANN401"]
+"src/texttype/undecided.py" = ["ANN401"]
+"src/texttype/delimitation.py" = ["ANN401"]
+"src/texttype/quotation.py" = ["ANN401"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10

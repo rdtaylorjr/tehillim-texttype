@@ -3,8 +3,8 @@
 import argparse
 
 from library.bhsa import load_api
-from texttype.corpus import psalter_clauses
-from texttype.drift import affected_psalms, change_counts, changes, comparable_count
+from texttype.corpus import PSALMS, book_clauses
+from texttype.drift import affected_chapters, change_counts, changes, comparable_count
 
 
 def main() -> None:
@@ -14,8 +14,8 @@ def main() -> None:
     parser.add_argument("after")
     args = parser.parse_args()
 
-    before = psalter_clauses(load_api(args.before))
-    after = psalter_clauses(load_api(args.after))
+    before = book_clauses(load_api(args.before), PSALMS)
+    after = book_clauses(load_api(args.after), PSALMS)
     shared = comparable_count(before, after)
     found = changes(before, after)
 
@@ -23,7 +23,7 @@ def main() -> None:
     print(f"BHSA {args.after}: {len(after)} clauses")
     print(f"comparable positions: {shared}")
     print(f"changed: {len(found)} ({len(found) / shared:.1%})")
-    print(f"psalms affected: {affected_psalms(found)}")
+    print(f"chapters affected: {affected_chapters(found)}")
     print("\nchanges:")
     for (b, a), n in change_counts(found).most_common():
         print(f"   {b:<8} -> {a:<8} {n:>5}")

@@ -8,11 +8,11 @@ from texttype.corpus import Clause
 
 @dataclass(frozen=True, slots=True)
 class TextTypeCount:
-    """One text-type string with its clause and psalm frequency."""
+    """One text-type string with its clause and chapter frequency."""
 
     txt: str
     clauses: int
-    psalms: int
+    chapters: int
     share_of_clauses: float
     depth: int
 
@@ -23,14 +23,14 @@ def inventory(clauses: list[Clause]) -> list[TextTypeCount]:
     if total == 0:
         return []
     clause_counts = Counter(c.txt for c in clauses)
-    psalms_seen: dict[str, set[int]] = {}
+    chapters_seen: dict[str, set[tuple[str, int]]] = {}
     for clause in clauses:
-        psalms_seen.setdefault(clause.txt, set()).add(clause.psalm)
+        chapters_seen.setdefault(clause.txt, set()).add((clause.book, clause.chapter))
     counts = [
         TextTypeCount(
             txt=txt,
             clauses=n,
-            psalms=len(psalms_seen[txt]),
+            chapters=len(chapters_seen[txt]),
             share_of_clauses=n / total,
             depth=len(txt),
         )

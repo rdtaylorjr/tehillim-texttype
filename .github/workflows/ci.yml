@@ -17,9 +17,9 @@ jobs:
       - run: pip install -e ".[dev]"
       - run: ruff check .
       - run: ruff format --check .
-      - run: mypy --strict src tools
-      - run: deptry src tools
-      - run: vulture src tools .vulture-whitelist.py --min-confidence 60
+      - run: mypy --strict src
+      - run: deptry src
+      - run: vulture src tests .vulture-whitelist.py --min-confidence 60 --ignore-decorators "@pytest.fixture" --ignore-names "pytestmark,pytest_*,silent"
       - run: pytest -q
 
   vulnerability-scan:

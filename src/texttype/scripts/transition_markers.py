@@ -4,7 +4,7 @@ import argparse
 from collections import Counter
 
 from library.bhsa import DEFAULT_VERSION, load_api
-from texttype.corpus import psalter_clauses
+from texttype.corpus import PSALMS, book_clauses
 from texttype.profile import profile_matrix, vocabulary
 from texttype.transitions import transitions
 from texttype.triggers import TRIGGER_FEATURES, markers_for_nodes
@@ -18,7 +18,7 @@ def main() -> None:
     args = parser.parse_args()
 
     api = load_api(args.version, TRIGGER_FEATURES)
-    clauses = psalter_clauses(api)
+    clauses = book_clauses(api, PSALMS)
     found = [t for t in transitions(clauses) if not args.to or t.to_txt == args.to]
     markers = markers_for_nodes(api, [t.to_node for t in found])
 
@@ -32,8 +32,8 @@ def main() -> None:
         print(f"{label:<52}{n:>7}")
 
     vocab = vocabulary(clauses)
-    psalms, matrix = profile_matrix(clauses, vocab)
-    print(f"\nper-psalm profile: {len(psalms)} psalms over {len(vocab)} text-type strings")
+    keys, matrix = profile_matrix(clauses, vocab)
+    print(f"\nper-chapter profile: {len(keys)} chapters over {len(vocab)} strings")
     print(f"mean share of the most common string: {matrix[:, vocab.index('Q')].mean():.3f}")
 
 

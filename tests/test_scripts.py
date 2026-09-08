@@ -3,9 +3,17 @@ import importlib
 import pytest
 
 SCRIPT_MODULES = [
+    "texttype.scripts.replicate",
     "texttype.scripts.report",
+    "texttype.scripts.boundaries",
+    "texttype.scripts.compare_books",
     "texttype.scripts.compare_versions",
+    "texttype.scripts.export_data",
+    "texttype.scripts.genre_separation",
+    "texttype.scripts.narrative_entries",
+    "texttype.scripts.quotations",
     "texttype.scripts.transition_markers",
+    "texttype.scripts.undecided_clauses",
 ]
 
 

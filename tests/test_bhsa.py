@@ -1,11 +1,8 @@
 import pytest
-from conftest import FakeApi, FakeF, FakeFeature, FakeL, FakeT
 
 from library.bhsa import (
     available_versions,
     load_api,
-    psalm_chapter_nodes,
-    psalms_book_node,
     version_location,
 )
 
@@ -67,17 +64,3 @@ def test_load_api_raises_when_text_fabric_returns_nothing(tmp_path):
 
     with pytest.raises(RuntimeError):
         load_api("2021", "otype", root, Fabric)
-
-
-def test_psalms_book_node_accepts_either_book_name(two_psalm_api):
-    assert psalms_book_node(two_psalm_api) == 100
-
-
-def test_psalms_book_node_raises_when_absent():
-    f = FakeF({"otype": FakeFeature({1: "book"}), "book": FakeFeature({1: "Genesis"})})
-    with pytest.raises(RuntimeError):
-        psalms_book_node(FakeApi(F=f, L=FakeL({}), T=FakeT({})))
-
-
-def test_psalm_chapter_nodes_maps_psalm_number_to_node(two_psalm_api):
-    assert psalm_chapter_nodes(two_psalm_api) == {1: 110, 2: 120}

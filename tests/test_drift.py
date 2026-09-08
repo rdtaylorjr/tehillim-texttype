@@ -1,9 +1,9 @@
 from texttype.corpus import Clause
-from texttype.drift import affected_psalms, change_counts, changes, comparable_count
+from texttype.drift import affected_chapters, change_counts, changes, comparable_count
 
 
-def clause(psalm, verse, index, txt, node=0):
-    return Clause(node=node, psalm=psalm, verse=verse, index_in_verse=index, txt=txt)
+def clause(chapter, verse, index, txt, node=0, book="Psalmi"):
+    return Clause(node=node, book=book, chapter=chapter, verse=verse, index_in_verse=index, txt=txt)
 
 
 def test_changes_finds_positions_whose_text_type_differs():
@@ -40,4 +40,4 @@ def test_change_counts_and_affected_psalms_summarize_the_differences():
         [clause(1, 1, 0, "N"), clause(2, 1, 0, "N")],
     )
     assert change_counts(found)[("Q", "N")] == 2
-    assert affected_psalms(found) == [1, 2]
+    assert affected_chapters(found) == [("Psalmi", 1), ("Psalmi", 2)]
