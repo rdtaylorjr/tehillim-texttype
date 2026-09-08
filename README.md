@@ -49,7 +49,7 @@ Version comparison identifies where a database decision changed. It does not est
 
 ## Reproducibility
 
-The repository requires Python 3.10 or later, Text-Fabric, and NumPy. BHSA versions are read from a local Text-Fabric checkout, with `4b` available for published-table replication and `2021` used for the reported corpus inventory. The test suite has a 95 percent coverage threshold and treats numerical warnings as errors. Scripts accept explicit version, label-file, and output paths. Fixed seeds govern the bootstrap and permutation procedures.
+The repository requires Python 3.12 or later, Text-Fabric, and NumPy. BHSA versions are read from a local Text-Fabric checkout, with `4b` available for published-table replication and `2021` used for the reported corpus inventory. The test suite has a 95 percent coverage threshold and treats numerical warnings as errors. Scripts accept explicit version, label-file, and output paths. Fixed seeds govern the bootstrap and permutation procedures.
 
 ## Installation
 
