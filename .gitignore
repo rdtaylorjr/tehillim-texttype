@@ -27,3 +27,6 @@ CLAUDE.md
 # Repo-specific
 # Extracted full text from copyrighted PDFs. This repo is public.
 corpus-cache/
+
+*.md
+!README.md
