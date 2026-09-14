@@ -1,13 +1,16 @@
 from texttype.corpus import Clause
 from texttype.transitions import (
-    psalms_with_transitions,
+    ENTRY,
+    RETURN,
+    SWITCH,
+    chapters_with_transitions,
     transition_counts,
     transitions,
 )
 
 
-def clause(node, psalm, verse, txt):
-    return Clause(node=node, psalm=psalm, verse=verse, index_in_verse=0, txt=txt)
+def clause(node, chapter, verse, txt, book="Psalmi"):
+    return Clause(node=node, book=book, chapter=chapter, verse=verse, index_in_verse=0, txt=txt)
 
 
 def test_transitions_records_each_change_between_consecutive_clauses():
@@ -18,7 +21,7 @@ def test_transitions_records_each_change_between_consecutive_clauses():
     assert found[0].verse == 2
 
 
-def test_transitions_do_not_cross_a_psalm_boundary():
+def test_transitions_do_not_cross_a_chapter_boundary():
     clauses = [clause(1, 1, 1, "Q"), clause(2, 2, 1, "N")]
     assert transitions(clauses) == []
 
@@ -38,6 +41,29 @@ def test_transition_counts_aggregates_ordered_pairs():
     assert transition_counts(transitions(clauses))[("Q", "QN")] == 2
 
 
-def test_psalms_with_transitions_lists_only_psalms_that_change():
+def test_chapters_with_transitions_lists_only_chapters_that_change():
     clauses = [clause(1, 1, 1, "Q"), clause(2, 1, 2, "N"), clause(3, 2, 1, "Q")]
-    assert psalms_with_transitions(transitions(clauses)) == {1}
+    assert chapters_with_transitions(transitions(clauses)) == {("Psalmi", 1)}
+
+
+def test_kind_is_entry_when_a_level_opens():
+    clauses = [clause(1, 1, 1, "Q"), clause(2, 1, 2, "QN")]
+    assert transitions(clauses)[0].kind == ENTRY
+
+
+def test_kind_is_return_when_a_level_closes():
+    clauses = [clause(1, 1, 1, "QND"), clause(2, 1, 2, "QN")]
+    assert transitions(clauses)[0].kind == RETURN
+
+
+def test_kind_is_switch_when_neither_string_prefixes_the_other():
+    clauses = [clause(1, 1, 1, "QN"), clause(2, 1, 2, "QD")]
+    assert transitions(clauses)[0].kind == SWITCH
+
+
+def test_opens_requires_both_an_entry_and_the_named_domain():
+    entry_into_narrative = transitions([clause(1, 1, 1, "Q"), clause(2, 1, 2, "QN")])[0]
+    assert entry_into_narrative.opens("N") is True
+    assert entry_into_narrative.opens("D") is False
+    back_to_narrative = transitions([clause(1, 1, 1, "QND"), clause(2, 1, 2, "QN")])[0]
+    assert back_to_narrative.opens("N") is False

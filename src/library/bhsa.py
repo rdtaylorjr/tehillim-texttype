@@ -8,7 +8,6 @@ from tf.fabric import Fabric as _RealFabric
 
 BHSA_CLONE_ROOT = Path.home() / "Developer" / "hebrew" / "bhsa" / "tf"
 DEFAULT_VERSION = "2021"
-PSALMS_BOOK_NAMES = ("Psalmi", "Psalms")
 REQUIRED_FEATURES = "otype book chapter verse txt domain"
 
 
@@ -39,17 +38,3 @@ def load_api(
     if api is None:
         raise RuntimeError(f"Text-Fabric failed to load {features} from {location}")
     return api
-
-
-def psalms_book_node(api: Any) -> int:
-    """The book node for Psalms, whose name differs across BHSA versions."""
-    for node in api.F.otype.s("book"):
-        if api.F.book.v(node) in PSALMS_BOOK_NAMES:
-            return int(node)
-    raise RuntimeError("Psalms book node not found in this BHSA version")
-
-
-def psalm_chapter_nodes(api: Any) -> dict[int, int]:
-    """Chapter node for each psalm number."""
-    book = psalms_book_node(api)
-    return {api.T.sectionFromNode(c)[1]: int(c) for c in api.L.d(book, otype="chapter")}

@@ -2,16 +2,16 @@ from texttype.corpus import Clause
 from texttype.inventory import depth_distribution, inventory
 
 
-def clause(psalm, txt, node=0):
-    return Clause(node=node, psalm=psalm, verse=1, index_in_verse=0, txt=txt)
+def clause(chapter, txt, node=0, book="Psalmi"):
+    return Clause(node=node, book=book, chapter=chapter, verse=1, index_in_verse=0, txt=txt)
 
 
-def test_inventory_counts_clauses_and_distinct_psalms():
+def test_inventory_counts_clauses_and_distinct_chapters():
     counts = inventory([clause(1, "Q"), clause(2, "Q"), clause(2, "QN")])
     by_txt = {c.txt: c for c in counts}
     assert by_txt["Q"].clauses == 2
-    assert by_txt["Q"].psalms == 2
-    assert by_txt["QN"].psalms == 1
+    assert by_txt["Q"].chapters == 2
+    assert by_txt["QN"].chapters == 1
 
 
 def test_inventory_reports_share_and_depth():
