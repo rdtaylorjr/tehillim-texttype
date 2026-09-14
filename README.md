@@ -35,13 +35,22 @@ The results separate several patterns that a pooled text-type label would obscur
 | Full-profile genre separation | AUC 0.537, permutation p 0.059 |
 | Depth plus transition-rate genre separation | AUC 0.519, permutation p 0.177 |
 
+Psalm 95 tests the boundary between syntactic text type and participant change. Its first 27 clauses, through 10a, remain `Q`, including the congregation-directed shift at 7d and the first-person divine speech at 9a. The feature changes only when its registered triggers occur: וָאֹמַר at 10b enters `QN`, the quoted verdict enters `QNQ`, and the oath clause at 11b enters `QNQQ`. The passage reaches nesting depth four without registering either principal speaker change.
+
+| Clausal event | `txt` result |
+| --- | --- |
+| Speaker changes at 7d and 9a | No transition, remains `Q` |
+| וָאֹמַר, 10b | `Q` → `QN` |
+| Quoted verdict | `QN` → `QNQ` |
+| Oath clause, 11b | `QNQ` → `QNQQ` |
+
 The profile result is weak and the two structural summary measures do not clear the stated permutation test. The observed genre-related signal is concentrated in the `Q` share, a result compatible with the syntactic conditions under which the database assigns `Q`. It does not show that text-type profile recovers a genre taxonomy.
 
 BHSA 4b reproduces the distinct text-type values of every held published example. Later versions differ at one published verse, Psalm 64:8, where the feature changed from `QN` to `N`. This is recorded as versioned database variation rather than treated as an error in the publication or a correction by this repository.
 
 ## Limitations
 
-The analysis inherits the ETCBC's clause segmentation and text-type labels. A syntactic label provides a disciplined register of formal configuration, yet it does not by itself identify speaker, genre, rhetorical function, editorial layer, or the literary status of a superscription. The concentration of undecided values in psalm openings makes this constraint unusually visible. First verse is an observable proxy for superscription, not a definition of it.
+The analysis inherits the ETCBC's clause segmentation and text-type labels. A syntactic label provides a disciplined register of formal configuration, yet it does not by itself identify speaker, genre, rhetorical function, editorial layer, or the literary status of a superscription. Psalm 95 shows that the feature can register embedded quotation while leaving independently identified speaker change unmarked. The concentration of undecided values in psalm openings makes this constraint unusually visible. First verse is an observable proxy for superscription, not a definition of it.
 
 Cross-book measures remain conditional on corpus composition, preservation of divisions, and the comparability of the selected books. Bootstrap intervals address chapter clustering and do not resolve these conceptual differences. The genre test uses a single supplied label per psalm, so mixed forms and disputed classifications disappear from the target. Association with a received division or a genre label supplies a constrained external check, not validation of either analysis.
 
